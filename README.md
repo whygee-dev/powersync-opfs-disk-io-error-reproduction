@@ -46,7 +46,7 @@ npm test
 The test (`src/powersync-connection.test.ts`) performs the following:
 
 1. Creates a PowerSync database instance with OPFSCoopSyncVFS
-2. Initializes raw tables and triggers
+2. Initializes raw tables
 3. Connects to the PowerSync service using a test token
 4. Waits for the initial sync to complete
 5. Verifies the connection and sync status
