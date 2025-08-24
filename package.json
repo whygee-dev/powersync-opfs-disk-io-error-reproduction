@@ -1,0 +1,40 @@
+{
+  "name": "powersync-opfs-disk-io-error-reproduction",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "prisma migrate reset --force",
+    "keys:generate": "tsx src/generate-keys.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@journeyapps/wa-sqlite": "^1.2.6",
+    "@powersync/common": "^1.36.0",
+    "@powersync/web": "^1.25.1",
+    "@prisma/client": "^6.14.0",
+    "jose": "^6.0.12",
+    "prisma": "^6.14.0",
+    "tsx": "^4.20.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.9.0",
+    "@vitest/browser": "^2.1.4",
+    "@vitest/ui": "^2.1.4",
+    "playwright": "^1.48.2",
+    "prettier": "^3.6.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vite-plugin-node-polyfills": "^0.22.0",
+    "vite-plugin-top-level-await": "^1.4.4",
+    "vite-plugin-wasm": "^3.3.0",
+    "vitest": "^2.1.4"
+  }
+}

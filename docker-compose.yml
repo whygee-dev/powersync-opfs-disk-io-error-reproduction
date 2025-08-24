@@ -1,0 +1,70 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    command: postgres -c 'max_connections=1000' -c 'wal_level=logical'
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres', '-d', 'postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  powersync-mongo:
+    image: mongo:7.0
+    command: --replSet rs0 --bind_ip_all --quiet
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_storage:/data/db
+
+  powersync-mongo-rs-init:
+    image: mongo:7.0
+    depends_on:
+      - powersync-mongo
+    restart: on-failure
+    entrypoint:
+      - bash
+      - -c
+      - 'mongosh --host powersync-mongo:27017 --eval ''try{rs.status().ok && quit(0)} catch {} rs.initiate({_id: "rs0", version: 1, members: [{ _id: 0, host : "powersync-mongo:27017" }]})'''
+
+  powersync:
+    restart: unless-stopped
+    image: journeyapps/powersync-service:latest
+    command: ['start', '-r', 'unified']
+    depends_on:
+      - powersync-mongo-rs-init
+    volumes:
+      - ./powersync:/powersync
+    environment:
+      POWERSYNC_CONFIG_PATH: /powersync/config.yaml
+
+      NODE_OPTIONS: --max-old-space-size=1000
+
+      PS_DATA_SOURCE_URI: postgres://postgres:postgres@db:5432/postgres
+      PS_MONGO_URI: mongodb://powersync-mongo:27017/powersync
+
+      PS_PORT: 2718
+
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:2718/probes/liveness').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 1s
+      retries: 15
+
+    ports:
+      - 2718:2718
+
+volumes:
+  mongo_storage:

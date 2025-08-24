@@ -1,0 +1,35 @@
+telemetry:
+  disable_telemetry_sharing: false
+
+replication:
+  connections:
+    - type: postgresql
+      uri: !env PS_DATA_SOURCE_URI
+      sslmode: disable
+
+storage:
+  type: mongodb
+  uri: !env PS_MONGO_URI
+
+port: !env PS_PORT
+
+sync_rules:
+  path: sync_rules.yaml
+
+client_auth:
+  # Enable this if using Supabase Auth
+  # supabase: true
+
+  # Optional static collection of public keys for JWT verification
+  jwks:
+    keys:
+      - kty: oct
+        k: l9QzEaT/oNsjM02EBat1WKFCNL+jQ9vxpr6t/KSlFO4=
+        alg: HS256
+
+  # JWKS audience
+  audience: ['powersync']
+
+api:
+  tokens:
+    - use_a_better_token_in_production
