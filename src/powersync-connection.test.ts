@@ -32,8 +32,7 @@ describe('PowerSync Raw Tables Connection Test', () => {
   it('should connect to PowerSync', async () => {
     console.log('Starting test...');
 
-    const token =
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LXVzZXIiLCJpYXQiOjE3NTYwNDk0NTgsImlzcyI6InRlc3QtY2xpZW50IiwiYXVkIjpbInBvd2Vyc3luYyIsImh0dHA6Ly8xMjcuMC4wLjE6UFNfUE9SVCJdLCJleHAiOjE3NTYxMzU4NTh9.rLshHgYj-VmeUTZzNALTq4UIEo1yszfiloyZCKl_Zpc';
+    const token = process.env.POWERSYNC_TOKEN;
 
     console.log('Creating PowerSync database with raw tables schema...');
 

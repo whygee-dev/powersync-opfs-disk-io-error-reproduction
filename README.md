@@ -53,7 +53,15 @@ The test (`src/powersync-connection.test.ts`) performs the following:
 
 ## Authentication
 
-The test uses a dev token generated using the `test-client` for authentication with the PowerSync service. The token is hardcoded in the test file.
+The test uses a dev token generated using the `test-client` for authentication with the PowerSync service. The token is stored in the `.env` file.
+
+### Generating New Tokens
+
+Tokens expire every 24 hours (the maximum allowed by PowerSync). To generate a new token:
+
+```bash
+npx @clarketm/jwt-cli sign --expiresIn=24h "{\"sub\": \"test_user\",\"iss\": \"test-client\",\"aud\": [\"powersync\",\"http://127.0.0.1:8080\"]}" "notagoodsecret"
+```
 
 ## Expected Issue
 

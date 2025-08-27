@@ -24,7 +24,7 @@ client_auth:
   jwks:
     keys:
       - kty: oct
-        k: l9QzEaT/oNsjM02EBat1WKFCNL+jQ9vxpr6t/KSlFO4=
+        k: bm90YWdvb2RzZWNyZXQ=
         alg: HS256
 
   # JWKS audience
